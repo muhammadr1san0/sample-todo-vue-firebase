@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import db from '../firebase'
+import firebase from '../firebase'
 
 export default {
   name: 'Todos',
@@ -31,7 +31,7 @@ export default {
       console.log(this.updateIdTodo.trim().length)
       if (this.updateIdTodo.trim().length > 0) {
         // ====> ini untuk edit <=====
-        db.collection('todos').doc(this.updateIdTodo).set({
+        firebase.firestore.collection('todos').doc(this.updateIdTodo).set({
           title: this.title,
           validated: false,
           created: new Date()
@@ -42,7 +42,7 @@ export default {
       } else {
         // ====> ini untuk Tambah data <=====
         try {
-          await db.collection('todos').add(data)
+          await firebase.firestore.collection('todos').add(data)
         } catch (error) {
           console.log(error)
         }
@@ -51,7 +51,7 @@ export default {
     },
     getData () {
       // ====> ini untuk Read data <=====
-      db.collection('todos').orderBy('created')
+      firebase.firestore.collection('todos').orderBy('created')
         .onSnapshot((querySnapshot) => {
         // eslint-disable-next-line prefer-const
           let dataTodos = []
@@ -72,7 +72,7 @@ export default {
       let hasil = true
       try {
         // ====> ini untuk Delete data <=====
-        await db.collection('todos').doc(id).delete()
+        await firebase.firestore.collection('todos').doc(id).delete()
       } catch (error) {
         hasil = false
       }
